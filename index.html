@@ -689,6 +689,7 @@
             spreadsheetId: '1mESUpI2U6Ank-rHTTqe2v_QHWZwppBkUKszjr4zOEcg',
             apiKey: 'AIzaSyAX28dpYmKkJVdXgHLXu6MJT0wJ0j88PpQ',
             sheets: {
+                inventory: 'SaaS Inventory',
                 users: 'User Assignments'
             }
         };
@@ -696,6 +697,7 @@
         const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/1mESUpI2U6Ank-rHTTqe2v_QHWZwppBkUKszjr4zOEcg/edit';
         
         let usersData = [];
+        let inventoryData = [];
         
         function openGoogleSheet() {
             window.open(GOOGLE_SHEET_URL, '_blank');
@@ -823,15 +825,43 @@
             document.getElementById('dashboard').style.display = 'none';
             
             try {
-                const url = `https://sheets.googleapis.com/v4/spreadsheets/${CONFIG.spreadsheetId}/values/${CONFIG.sheets.users}?key=${CONFIG.apiKey}`;
-                const response = await fetch(url);
-                const data = await response.json();
+                // Load both sheets in parallel
+                const [inventoryResponse, usersResponse] = await Promise.all([
+                    fetch(`https://sheets.googleapis.com/v4/spreadsheets/${CONFIG.spreadsheetId}/values/${CONFIG.sheets.inventory}?key=${CONFIG.apiKey}`),
+                    fetch(`https://sheets.googleapis.com/v4/spreadsheets/${CONFIG.spreadsheetId}/values/${CONFIG.sheets.users}?key=${CONFIG.apiKey}`)
+                ]);
                 
-                if (data.values && data.values.length > 1) {
-                    // Parse Google Sheets data
-                    const headers = data.values[0];
-                    const rows = data.values.slice(1);
-                    
+                const inventoryJson = await inventoryResponse.json();
+                const usersJson = await usersResponse.json();
+                
+                // Parse SaaS Inventory
+                if (inventoryJson.values && inventoryJson.values.length > 1) {
+                    const rows = inventoryJson.values.slice(1);
+                    inventoryData = rows.map((row, index) => ({
+                        id: index + 1,
+                        name: row[0] || '',
+                        category: row[1] || '',
+                        department: row[2] || '',
+                        owner: row[3] || '',
+                        monthlyCost: parseFloat(row[4]) || 0,
+                        annualCost: parseFloat(row[5]) || 0,
+                        billingCycle: row[6] || '',
+                        paymentMethod: row[7] || '',
+                        numLicenses: parseInt(row[8]) || 0,
+                        costPerLicense: parseFloat(row[9]) || 0,
+                        activeUsers: parseInt(row[10]) || 0,
+                        utilization: parseFloat(row[11]) || 0,
+                        contractStart: row[12] || '',
+                        contractEnd: row[13] || '',
+                        renewalDate: row[14] || '',
+                        autoRenewal: row[15] || '',
+                        status: row[16] || 'Active'
+                    })).filter(item => item.name);
+                }
+                
+                // Parse User Assignments
+                if (usersJson.values && usersJson.values.length > 1) {
+                    const rows = usersJson.values.slice(1);
                     usersData = rows.map((row, index) => ({
                         id: index + 1,
                         name: row[0] || '',
@@ -850,13 +880,15 @@
                         monthlyCost: parseFloat(row[13]) || 0,
                         annualSavings: parseFloat(row[14]) || 0
                     })).filter(user => user.name && user.tool);
-                    
+                }
+                
+                if (inventoryData.length > 0 || usersData.length > 0) {
                     renderDashboard();
                     document.getElementById('loading').style.display = 'none';
                     document.getElementById('dashboard').style.display = 'block';
                     document.getElementById('lastUpdate').textContent = new Date().toLocaleString();
                 } else {
-                    throw new Error('No data found in sheet');
+                    throw new Error('No data found in sheets');
                 }
             } catch (error) {
                 console.error('Error loading data:', error);
@@ -866,7 +898,7 @@
                         Please check that:
                         <ul style="margin-top: 12px; margin-left: 20px;">
                             <li>Your Google Sheet is shared publicly (Viewer access)</li>
-                            <li>The sheet name is exactly "User Assignments"</li>
+                            <li>Sheet names are exactly "SaaS Inventory" and "User Assignments"</li>
                             <li>Your API key is valid and restricted to Google Sheets API</li>
                         </ul>
                         <br>
@@ -879,43 +911,42 @@
         }
 
         function renderDashboard() {
+            // Use inventory data for main calculations (more accurate)
+            const totalAnnual = inventoryData.reduce((sum, item) => sum + item.annualCost, 0);
+            
+            // User assignments metrics
             const pending = usersData.filter(u => !u.decision).length;
             const decided = usersData.filter(u => u.decision).length;
             const eliminated = usersData.filter(u => u.decision === 'Eliminate');
             const potentialSavings = eliminated.reduce((sum, u) => sum + (u.monthlyCost * 12), 0);
             const progress = usersData.length > 0 ? Math.round((decided / usersData.length) * 100) : 0;
-            const totalAnnual = usersData.reduce((sum, u) => sum + (u.monthlyCost * 12), 0);
 
             document.getElementById('totalAnnual').textContent = '$' + (totalAnnual / 1000).toFixed(0) + 'k';
             document.getElementById('pendingReviews').textContent = pending;
             document.getElementById('potentialSavings').textContent = '$' + (potentialSavings / 1000).toFixed(1) + 'k';
             document.getElementById('reviewProgress').textContent = progress + '%';
 
-            // Top 5 Expenses
-            const toolCosts = {};
-            usersData.forEach(u => {
-                toolCosts[u.tool] = (toolCosts[u.tool] || 0) + u.monthlyCost;
-            });
-            const topTools = Object.entries(toolCosts)
-                .sort((a, b) => b[1] - a[1])
+            // Top 5 Expenses - Use inventory data
+            const topTools = inventoryData
+                .sort((a, b) => b.monthlyCost - a.monthlyCost)
                 .slice(0, 5);
             
-            const maxCost = topTools[0] ? topTools[0][1] : 1;
-            document.getElementById('topExpenses').innerHTML = topTools.map(([tool, cost]) => `
+            const maxCost = topTools[0] ? topTools[0].monthlyCost : 1;
+            document.getElementById('topExpenses').innerHTML = topTools.map(tool => `
                 <div class="expense-item">
-                    <div class="expense-name">${tool}</div>
+                    <div class="expense-name">${tool.name}</div>
                     <div class="expense-bar">
-                        <div class="expense-fill" style="width: ${(cost / maxCost * 100)}%"></div>
+                        <div class="expense-fill" style="width: ${(tool.monthlyCost / maxCost * 100)}%"></div>
                     </div>
-                    <div class="expense-cost">$${cost.toFixed(2)}/mo</div>
+                    <div class="expense-cost">$${tool.monthlyCost.toFixed(2)}/mo</div>
                 </div>
             `).join('');
 
-            // Department Breakdown
+            // Department Breakdown - Use inventory data
             const deptCosts = {};
-            usersData.forEach(u => {
-                const dept = u.department || 'Other';
-                deptCosts[dept] = (deptCosts[dept] || 0) + u.monthlyCost;
+            inventoryData.forEach(item => {
+                const dept = item.department || 'Other';
+                deptCosts[dept] = (deptCosts[dept] || 0) + item.monthlyCost;
             });
             const totalDeptCost = Object.values(deptCosts).reduce((a, b) => a + b, 0);
             const deptColors = ['#C29F9F', '#5D6556', '#544A57', '#767676', '#E8E2DD'];
@@ -925,22 +956,23 @@
                     <div class="dept-item">
                         <div class="dept-color" style="background: ${deptColors[i % deptColors.length]}"></div>
                         <div class="dept-name">${dept}</div>
-                        <div class="dept-percent">${((cost / totalDeptCost) * 100).toFixed(0)}%</div>
+                        <div class="dept-percent">${totalDeptCost > 0 ? ((cost / totalDeptCost) * 100).toFixed(0) : 0}%</div>
                     </div>
                 `).join('');
 
-            // Utilization
-            const activeUsers = usersData.filter(u => u.status === 'Active').length;
-            const inactiveUsers = usersData.filter(u => u.status === 'Inactive').length;
-            const total = activeUsers + inactiveUsers;
-            const utilizationRate = total > 0 ? (activeUsers / total) * 100 : 0;
+            // Utilization - Use inventory data
+            const underutilized = inventoryData.filter(item => item.utilization < 60);
+            const wellUtilized = inventoryData.filter(item => item.utilization >= 80);
+            const avgUtilization = inventoryData.length > 0 
+                ? inventoryData.reduce((sum, item) => sum + item.utilization, 0) / inventoryData.length 
+                : 0;
             
             let utilLevel = 'High';
             let utilClass = 'high';
-            if (utilizationRate < 60) {
+            if (avgUtilization < 60) {
                 utilLevel = 'Low';
                 utilClass = 'low';
-            } else if (utilizationRate < 80) {
+            } else if (avgUtilization < 80) {
                 utilLevel = 'Medium';
                 utilClass = 'medium';
             }
@@ -949,14 +981,14 @@
                 <div class="util-item">
                     <div class="util-header">
                         <div class="util-label">${utilLevel} Utilization</div>
-                        <div class="util-value">${utilizationRate.toFixed(0)}%</div>
+                        <div class="util-value">${avgUtilization.toFixed(0)}%</div>
                     </div>
                     <div class="util-bar">
-                        <div class="util-fill ${utilClass}" style="width: ${utilizationRate}%"></div>
+                        <div class="util-fill ${utilClass}" style="width: ${avgUtilization}%"></div>
                     </div>
                 </div>
                 <div style="margin-top: 16px; font-size: 0.875rem; color: var(--mid);">
-                    ${activeUsers} active / ${total} total licenses
+                    ${underutilized.length} underutilized tools / ${inventoryData.length} total
                 </div>
             `;
 
