@@ -837,26 +837,31 @@
                 // Parse SaaS Inventory
                 if (inventoryJson.values && inventoryJson.values.length > 1) {
                     const rows = inventoryJson.values.slice(1);
-                    inventoryData = rows.map((row, index) => ({
-                        id: index + 1,
-                        name: row[0] || '',
-                        category: row[1] || '',
-                        department: row[2] || '',
-                        owner: row[3] || '',
-                        monthlyCost: parseFloat(row[4]) || 0,
-                        annualCost: parseFloat(row[5]) || 0,
-                        billingCycle: row[6] || '',
-                        paymentMethod: row[7] || '',
-                        numLicenses: parseInt(row[8]) || 0,
-                        costPerLicense: parseFloat(row[9]) || 0,
-                        activeUsers: parseInt(row[10]) || 0,
-                        utilization: parseFloat(row[11]) || 0,
-                        contractStart: row[12] || '',
-                        contractEnd: row[13] || '',
-                        renewalDate: row[14] || '',
-                        autoRenewal: row[15] || '',
-                        status: row[16] || 'Active'
-                    })).filter(item => item.name);
+                    console.log('First 3 rows from SaaS Inventory:', rows.slice(0, 3));
+                    inventoryData = rows.map((row, index) => {
+                        const monthlyCost = parseFloat(row[4]) || 0;
+                        return {
+                            id: index + 1,
+                            name: row[0] || '',
+                            category: row[1] || '',
+                            department: row[2] || '',
+                            owner: row[3] || '',
+                            monthlyCost: monthlyCost,
+                            annualCost: monthlyCost * 12, // Calculate from monthly
+                            billingCycle: row[6] || '',
+                            paymentMethod: row[7] || '',
+                            numLicenses: parseInt(row[8]) || 0,
+                            costPerLicense: parseFloat(row[9]) || 0,
+                            activeUsers: parseInt(row[10]) || 0,
+                            utilization: parseFloat(row[11]) || 0,
+                            contractStart: row[12] || '',
+                            contractEnd: row[13] || '',
+                            renewalDate: row[14] || '',
+                            autoRenewal: row[15] || '',
+                            status: row[16] || 'Active'
+                        };
+                    }).filter(item => item.name);
+                    console.log('Parsed inventory data (first 3):', inventoryData.slice(0, 3));
                 }
                 
                 // Parse User Assignments
