@@ -1,10 +1,9 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kathy Kuo Home - SaaS Management Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -54,56 +53,54 @@
             z-index: 1;
         }
         
-        .header-eyebrow {
+        .eyebrow {
             font-size: 0.6875rem;
-            letter-spacing: 0.22em;
+            letter-spacing: 0.24em;
             text-transform: uppercase;
             color: var(--accent-light);
-            margin-bottom: 16px;
-        }
-        
-        .header h1 {
-            font-family: 'Cormorant Garamond', Georgia, serif;
-            font-size: clamp(2.5rem, 5vw, 3.5rem);
-            font-weight: 400;
-            line-height: 1.05;
             margin-bottom: 12px;
+            font-weight: 400;
         }
         
-        .header p {
-            opacity: 0.6;
+        h1 {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 3rem;
+            font-weight: 400;
+            margin-bottom: 8px;
+            line-height: 1.1;
+        }
+        
+        .subtitle {
             font-size: 0.9375rem;
             color: var(--warm-white);
+            opacity: 0.8;
+            font-weight: 300;
         }
         
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 48px 40px;
+            padding: 40px;
         }
         
         .refresh-bar {
-            background: var(--warm-white);
-            padding: 20px 24px;
-            border-radius: 2px;
-            margin-bottom: 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 1px solid var(--border);
+            padding: 20px 0;
+            margin-bottom: 32px;
         }
         
-        .refresh-bar .last-updated {
-            color: var(--mid);
+        .last-updated {
             font-size: 0.875rem;
+            color: var(--mid);
         }
         
         .btn-primary {
             background: var(--charcoal);
-            color: var(--warm-white);
+            color: white;
             border: 1px solid var(--charcoal);
             padding: 12px 28px;
-            border-radius: 0;
             cursor: pointer;
             font-weight: 400;
             font-size: 0.6875rem;
@@ -112,7 +109,7 @@
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
         
         .btn-primary:hover {
@@ -144,106 +141,68 @@
         
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 24px;
-            margin-bottom: 48px;
+            margin-bottom: 40px;
         }
         
         .stat-card {
             background: var(--warm-white);
             padding: 32px;
             border: 1px solid var(--border);
-            transition: all 0.3s;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(0,0,0,0.08);
         }
         
         .stat-label {
             font-size: 0.6875rem;
-            letter-spacing: 0.18em;
+            letter-spacing: 0.14em;
             text-transform: uppercase;
             color: var(--accent);
-            margin-bottom: 20px;
+            margin-bottom: 12px;
         }
         
         .stat-value {
             font-family: 'Cormorant Garamond', Georgia, serif;
-            font-size: 4rem;
-            font-weight: 400;
+            font-size: 2.5rem;
+            color: var(--charcoal);
+            font-weight: 500;
             line-height: 1;
-            color: var(--charcoal);
-            margin-bottom: 12px;
-        }
-        
-        .stat-change {
-            font-size: 0.875rem;
-            color: var(--mid);
-        }
-        
-        .stat-change.positive {
-            color: var(--green);
-        }
-        
-        .charts-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 24px;
-            margin-bottom: 48px;
-        }
-        
-        /* Visual Insights Section */
-        .insights-section {
-            margin-bottom: 48px;
-        }
-        
-        .section-title {
-            font-family: 'Cormorant Garamond', Georgia, serif;
-            font-size: 2rem;
-            font-weight: 400;
-            color: var(--charcoal);
-            margin-bottom: 32px;
         }
         
         .insights-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 24px;
+            margin-bottom: 40px;
         }
         
         .insight-card {
             background: var(--warm-white);
-            padding: 28px;
+            padding: 32px;
             border: 1px solid var(--border);
         }
         
         .insight-card h3 {
-            font-family: 'Cormorant Garamond', Georgia, serif;
-            font-size: 1.5rem;
-            font-weight: 400;
-            color: var(--charcoal);
+            font-size: 0.6875rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--accent);
             margin-bottom: 24px;
-        }
-        
-        /* Top Expenses Bars */
-        .expense-bars {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+            font-weight: 500;
         }
         
         .expense-item {
             display: flex;
-            flex-direction: column;
-            gap: 8px;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
         }
         
-        .expense-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
+        .expense-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
         }
         
         .expense-name {
@@ -252,212 +211,99 @@
             font-weight: 500;
         }
         
-        .expense-amount {
-            font-family: 'Cormorant Garamond', Georgia, serif;
-            font-size: 1.25rem;
-            color: var(--mid);
-            font-weight: 500;
-        }
-        
-        .expense-bar-bg {
-            height: 12px;
+        .expense-bar {
+            flex: 1;
+            margin: 0 16px;
+            height: 8px;
             background: var(--cream);
+            position: relative;
             overflow: hidden;
         }
         
-        .expense-bar-fill {
+        .expense-fill {
+            position: absolute;
+            left: 0;
+            top: 0;
             height: 100%;
-            transition: width 0.6s ease;
+            background: var(--accent-light);
+            transition: width 0.3s ease;
         }
         
-        /* Department Breakdown */
-        .dept-items {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            margin-bottom: 24px;
+        .expense-cost {
+            font-size: 0.875rem;
+            color: var(--mid);
+            min-width: 80px;
+            text-align: right;
         }
         
         .dept-item {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--border);
-        }
-        
-        .dept-item:last-child {
-            border-bottom: none;
-        }
-        
-        .dept-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            margin-bottom: 16px;
         }
         
         .dept-color {
-            width: 16px;
-            height: 16px;
+            width: 12px;
+            height: 12px;
+            margin-right: 12px;
         }
         
         .dept-name {
+            flex: 1;
             font-size: 0.9375rem;
             color: var(--charcoal);
-            font-weight: 500;
-        }
-        
-        .dept-stats {
-            display: flex;
-            align-items: baseline;
-            gap: 16px;
-        }
-        
-        .dept-amount {
-            font-family: 'Cormorant Garamond', Georgia, serif;
-            font-size: 1.25rem;
-            color: var(--charcoal);
-            font-weight: 500;
         }
         
         .dept-percent {
             font-size: 0.875rem;
             color: var(--mid);
-        }
-        
-        .dept-total {
-            display: flex;
-            justify-content: space-between;
-            padding-top: 16px;
-            border-top: 2px solid var(--charcoal);
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--accent);
-        }
-        
-        .total-amount {
-            font-family: 'Cormorant Garamond', Georgia, serif;
-            font-size: 1.5rem;
-            color: var(--charcoal);
-            font-weight: 500;
-            letter-spacing: 0;
-            text-transform: none;
-        }
-        
-        /* Utilization Overview */
-        .util-items {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            margin-bottom: 24px;
+            margin-left: 12px;
         }
         
         .util-item {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
+            margin-bottom: 20px;
         }
         
         .util-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            margin-bottom: 8px;
         }
         
         .util-label {
-            font-size: 0.875rem;
+            font-size: 0.9375rem;
             color: var(--charcoal);
             font-weight: 500;
         }
         
-        .util-count {
+        .util-value {
             font-size: 0.875rem;
             color: var(--mid);
         }
         
-        .util-visual {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .util-circle {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
-        
-        .util-circle.high {
-            background: var(--green);
-        }
-        
-        .util-circle.medium {
-            background: var(--accent-light);
-        }
-        
-        .util-circle.low {
-            background: var(--mid);
-        }
-        
-        .util-bar-bg {
-            flex: 1;
+        .util-bar {
             height: 8px;
             background: var(--cream);
             overflow: hidden;
         }
         
-        .util-bar-fill {
+        .util-fill {
             height: 100%;
-            transition: width 0.6s ease;
+            transition: width 0.3s ease;
         }
         
-        .util-bar-fill.high {
-            background: var(--green);
-        }
-        
-        .util-bar-fill.medium {
-            background: var(--accent-light);
-        }
-        
-        .util-bar-fill.low {
-            background: var(--mid);
-        }
-        
-        .util-note {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 16px;
-            background: var(--cream);
-            border-left: 3px solid var(--accent-light);
-            font-size: 0.875rem;
-            color: var(--mid);
-        }
-        
-        .chart-card {
-            background: var(--warm-white);
-            padding: 24px;
-            border: 1px solid var(--border);
-        }
-        
-        .chart-card h3 {
-            font-family: 'Cormorant Garamond', Georgia, serif;
-            font-size: 1.5rem;
-            font-weight: 400;
-            margin-bottom: 20px;
-            color: var(--charcoal);
-        }
+        .util-fill.high { background: var(--green); }
+        .util-fill.medium { background: var(--accent-light); }
+        .util-fill.low { background: var(--mid); }
         
         .table-card {
             background: var(--warm-white);
             border: 1px solid var(--border);
-            overflow: hidden;
+            margin-bottom: 40px;
         }
         
         .table-header {
-            padding: 28px 32px;
+            padding: 24px 32px;
             border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
@@ -466,7 +312,7 @@
         
         .table-header h3 {
             font-family: 'Cormorant Garamond', Georgia, serif;
-            font-size: 1.75rem;
+            font-size: 1.5rem;
             font-weight: 400;
             color: var(--charcoal);
         }
@@ -477,12 +323,12 @@
         }
         
         .filter-tab {
-            padding: 8px 20px;
+            padding: 8px 16px;
             border: 1px solid var(--border);
             background: transparent;
             cursor: pointer;
             font-size: 0.6875rem;
-            letter-spacing: 0.14em;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
             color: var(--mid);
             transition: all 0.2s;
@@ -494,7 +340,7 @@
         
         .filter-tab.active {
             background: var(--charcoal);
-            color: var(--warm-white);
+            color: white;
             border-color: var(--charcoal);
         }
         
@@ -538,70 +384,51 @@
             transform: translateX(4px);
         }
         
-        .utilization-bar {
-            width: 80px;
-            height: 6px;
-            background: var(--border);
-            overflow: hidden;
-            display: inline-block;
-            margin-left: 12px;
-        }
-        
-        .utilization-fill {
-            height: 100%;
-            transition: width 0.3s;
-        }
-        
-        .utilization-fill.high { background: var(--green); }
-        .utilization-fill.medium { background: var(--accent-light); }
-        .utilization-fill.low { background: var(--mid); }
-        
         .badge {
-            display: inline-block;
-            padding: 4px 12px;
+            padding: 6px 12px;
             font-size: 0.6875rem;
             letter-spacing: 0.1em;
             text-transform: uppercase;
-            font-weight: 500;
+            display: inline-block;
         }
         
         .badge-active { background: var(--green); color: white; }
         .badge-inactive { background: var(--mid); color: white; }
+        .badge-pending { background: var(--cream); color: var(--mid); border: 1px solid var(--border); }
         .badge-keep { background: var(--green); color: white; }
         .badge-eliminate { background: var(--mid); color: white; }
         .badge-review { background: var(--accent-light); color: white; }
         .badge-consolidate { background: var(--charcoal); color: white; }
-        .badge-pending { background: var(--border); color: var(--mid); }
         
-        .loading {
+        #loading {
             text-align: center;
-            padding: 80px;
+            padding: 100px 20px;
+            font-size: 1.125rem;
             color: var(--mid);
         }
         
-        .spinner {
-            border: 3px solid var(--border);
-            border-top: 3px solid var(--accent);
-            border-radius: 50%;
+        .loading-spinner {
             width: 40px;
             height: 40px;
+            margin: 0 auto 20px;
+            border: 3px solid var(--border);
+            border-top-color: var(--charcoal);
+            border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin: 0 auto 16px;
         }
         
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            to { transform: rotate(360deg); }
         }
         
         .alert {
-            background: var(--warm-white);
-            border-left: 4px solid var(--accent-light);
-            padding: 20px 24px;
-            margin-bottom: 40px;
-            color: var(--mid);
+            background: var(--cream);
+            border-left: 3px solid var(--accent-light);
+            padding: 20px;
+            margin-bottom: 32px;
             font-size: 0.9375rem;
-            line-height: 1.75;
+            color: var(--mid);
+            line-height: 1.6;
         }
         
         .alert strong {
@@ -729,9 +556,8 @@
         }
         
         @media (max-width: 1024px) {
-            .insights-grid {
-                grid-template-columns: 1fr;
-            }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .insights-grid { grid-template-columns: 1fr; }
         }
         
         @media (max-width: 768px) {
@@ -751,224 +577,64 @@
 <body>
     <div class="header">
         <div class="header-content">
-            <p class="header-eyebrow">Internal Operations</p>
+            <div class="eyebrow">INTERNAL OPERATIONS</div>
             <h1>SaaS Management Dashboard</h1>
-            <p>Real-time analytics and executive review system for Kathy Kuo Home</p>
+            <p class="subtitle">Real-time analytics and executive review system for Kathy Kuo Home</p>
         </div>
     </div>
-    
-    <div class="container">
-        <div class="refresh-bar">
-            <div class="last-updated">Last updated: <span id="lastUpdate">Never</span></div>
-            <div style="display: flex; gap: 12px;">
-                <button class="btn-primary" onclick="openGoogleSheet()">
-                    <span>📝</span>
-                    <span>Open Google Sheet</span>
-                </button>
-                <button class="btn-primary" onclick="loadData()">
-                    <span>↻</span>
-                    <span>Refresh Data</span>
-                </button>
+
+    <div id="loading">
+        <div class="loading-spinner"></div>
+        Loading dashboard data...
+    </div>
+
+    <div id="dashboard" style="display:none;">
+        <div class="container">
+            <div class="refresh-bar">
+                <div class="last-updated">Last updated: <span id="lastUpdate">Never</span></div>
+                <div style="display: flex; gap: 12px;">
+                    <button class="btn-primary" onclick="openGoogleSheet()">
+                        <span>📝</span>
+                        <span>Open Google Sheet</span>
+                    </button>
+                    <button class="btn-primary" onclick="loadData()">
+                        <span>↻</span>
+                        <span>Refresh Data</span>
+                    </button>
+                </div>
             </div>
-        </div>
-        
-        <div id="loading" class="loading">
-            <div class="spinner"></div>
-            <p>Loading dashboard data...</p>
-        </div>
-        
-        <div id="dashboard" style="display: none;">
+
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-label">Total Annual Spend</div>
                     <div class="stat-value" id="totalAnnual">$0</div>
-                    <div class="stat-change positive">↑ 12% vs last year</div>
                 </div>
-
                 <div class="stat-card">
                     <div class="stat-label">Pending Reviews</div>
                     <div class="stat-value" id="pendingReviews">0</div>
-                    <div class="stat-change">User assignments awaiting decision</div>
                 </div>
-
                 <div class="stat-card">
                     <div class="stat-label">Potential Savings</div>
                     <div class="stat-value" id="potentialSavings">$0</div>
-                    <div class="stat-change">From eliminations</div>
                 </div>
-
                 <div class="stat-card">
                     <div class="stat-label">Review Progress</div>
                     <div class="stat-value" id="reviewProgress">0%</div>
-                    <div class="stat-change positive">↑ Keep going</div>
                 </div>
             </div>
 
-            <!-- Visual Insights Section -->
-            <div class="insights-section">
-                <h2 class="section-title">Cost Analysis</h2>
-                
-                <div class="insights-grid">
-                    <!-- Top Expenses Card -->
-                    <div class="insight-card top-expenses">
-                        <h3>Top 5 Expenses</h3>
-                        <div class="expense-bars">
-                            <div class="expense-item">
-                                <div class="expense-header">
-                                    <span class="expense-name">Salesforce</span>
-                                    <span class="expense-amount">$49.9k</span>
-                                </div>
-                                <div class="expense-bar-bg">
-                                    <div class="expense-bar-fill" style="width: 100%; background: var(--charcoal);"></div>
-                                </div>
-                            </div>
-                            
-                            <div class="expense-item">
-                                <div class="expense-header">
-                                    <span class="expense-name">Gmail</span>
-                                    <span class="expense-amount">$34.6k</span>
-                                </div>
-                                <div class="expense-bar-bg">
-                                    <div class="expense-bar-fill" style="width: 69%; background: var(--mid);"></div>
-                                </div>
-                            </div>
-                            
-                            <div class="expense-item">
-                                <div class="expense-header">
-                                    <span class="expense-name">Asana</span>
-                                    <span class="expense-amount">$29.3k</span>
-                                </div>
-                                <div class="expense-bar-bg">
-                                    <div class="expense-bar-fill" style="width: 59%; background: var(--accent-light);"></div>
-                                </div>
-                            </div>
-                            
-                            <div class="expense-item">
-                                <div class="expense-header">
-                                    <span class="expense-name">RingCentral</span>
-                                    <span class="expense-amount">$17.5k</span>
-                                </div>
-                                <div class="expense-bar-bg">
-                                    <div class="expense-bar-fill" style="width: 35%; background: var(--green);"></div>
-                                </div>
-                            </div>
-                            
-                            <div class="expense-item">
-                                <div class="expense-header">
-                                    <span class="expense-name">Adobe Creative Cloud</span>
-                                    <span class="expense-amount">$14.3k</span>
-                                </div>
-                                <div class="expense-bar-bg">
-                                    <div class="expense-bar-fill" style="width: 29%; background: var(--light-accessible);"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Department Breakdown Card -->
-                    <div class="insight-card dept-breakdown">
-                        <h3>Cost by Department</h3>
-                        <div class="dept-items">
-                            <div class="dept-item">
-                                <div class="dept-info">
-                                    <div class="dept-color" style="background: var(--charcoal);"></div>
-                                    <span class="dept-name">Admin</span>
-                                </div>
-                                <div class="dept-stats">
-                                    <span class="dept-amount">$81k</span>
-                                    <span class="dept-percent">48%</span>
-                                </div>
-                            </div>
-                            
-                            <div class="dept-item">
-                                <div class="dept-info">
-                                    <div class="dept-color" style="background: var(--mid);"></div>
-                                    <span class="dept-name">Sales</span>
-                                </div>
-                                <div class="dept-stats">
-                                    <span class="dept-amount">$50k</span>
-                                    <span class="dept-percent">30%</span>
-                                </div>
-                            </div>
-                            
-                            <div class="dept-item">
-                                <div class="dept-info">
-                                    <div class="dept-color" style="background: var(--accent-light);"></div>
-                                    <span class="dept-name">Design</span>
-                                </div>
-                                <div class="dept-stats">
-                                    <span class="dept-amount">$14k</span>
-                                    <span class="dept-percent">8%</span>
-                                </div>
-                            </div>
-                            
-                            <div class="dept-item">
-                                <div class="dept-info">
-                                    <div class="dept-color" style="background: var(--green);"></div>
-                                    <span class="dept-name">Engineering</span>
-                                </div>
-                                <div class="dept-stats">
-                                    <span class="dept-amount">$24k</span>
-                                    <span class="dept-percent">14%</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="dept-total">
-                            <span>Total Annual</span>
-                            <span class="total-amount">$169,000</span>
-                        </div>
-                    </div>
-                    
-                    <!-- Utilization Overview -->
-                    <div class="insight-card utilization-overview">
-                        <h3>License Utilization</h3>
-                        <div class="util-items">
-                            <div class="util-item">
-                                <div class="util-header">
-                                    <span class="util-label">High (>85%)</span>
-                                    <span class="util-count">4 apps</span>
-                                </div>
-                                <div class="util-visual">
-                                    <div class="util-circle high"></div>
-                                    <div class="util-bar-bg">
-                                        <div class="util-bar-fill high" style="width: 40%;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="util-item">
-                                <div class="util-header">
-                                    <span class="util-label">Medium (70-85%)</span>
-                                    <span class="util-count">2 apps</span>
-                                </div>
-                                <div class="util-visual">
-                                    <div class="util-circle medium"></div>
-                                    <div class="util-bar-bg">
-                                        <div class="util-bar-fill medium" style="width: 20%;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="util-item">
-                                <div class="util-header">
-                                    <span class="util-label">Low (<70%)</span>
-                                    <span class="util-count">2 apps</span>
-                                </div>
-                                <div class="util-visual">
-                                    <div class="util-circle low"></div>
-                                    <div class="util-bar-bg">
-                                        <div class="util-bar-fill low" style="width: 20%;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="util-note">
-                            <span>⚠️</span>
-                            <span>2 apps below 70% - potential cost reduction opportunity</span>
-                        </div>
-                    </div>
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <h3>Top 5 Expenses</h3>
+                    <div id="topExpenses"></div>
+                </div>
+                <div class="insight-card">
+                    <h3>Cost by Department</h3>
+                    <div id="deptBreakdown"></div>
+                </div>
+                <div class="insight-card">
+                    <h3>License Utilization</h3>
+                    <div id="utilization"></div>
                 </div>
             </div>
 
@@ -987,21 +653,19 @@
                         </div>
                     </div>
                 </div>
-                <div style="overflow-x: auto;">
-                    <table id="usersTable">
-                        <thead>
-                            <tr>
-                                <th>Employee</th>
-                                <th>Tool</th>
-                                <th>Monthly Cost</th>
-                                <th>Status</th>
-                                <th>Decision</th>
-                            </tr>
-                        </thead>
-                        <tbody id="usersTableBody">
-                        </tbody>
-                    </table>
-                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Employee</th>
+                            <th>Tool</th>
+                            <th>Monthly Cost</th>
+                            <th>Status</th>
+                            <th>Decision</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -1020,26 +684,24 @@
     </div>
 
     <script>
-        let usersData = [
-            { id: 1, name: "Abby Coburn", email: "abbyc@kathykuohome.com", tool: "Gmail", monthlyCost: 14.40, status: "Active", decision: null, actionBy: "", notes: "" },
-            { id: 2, name: "Abby Coburn", email: "abbyc@kathykuohome.com", tool: "Asana", monthlyCost: 30.49, status: "Active", decision: null, actionBy: "", notes: "" },
-            { id: 3, name: "Abby Coburn", email: "abbyc@kathykuohome.com", tool: "NordLayer VPN", monthlyCost: 8.00, status: "Active", decision: null, actionBy: "", notes: "" },
-            { id: 4, name: "Alex Wong", email: "alex@kathykuohome.com", tool: "Slack", monthlyCost: 15.00, status: "Active", decision: null, actionBy: "", notes: "" },
-            { id: 5, name: "David Chartier", email: "david@kathykuohome.com", tool: "GitHub", monthlyCost: 21.00, status: "Active", decision: null, actionBy: "", notes: "" },
-        ];
+        // Configuration
+        const CONFIG = {
+            spreadsheetId: '1mESUpI2U6Ank-rHTTqe2v_QHWZwppBkUKszjr4zOEcg',
+            apiKey: 'AIzaSyAX28dpYmKkJVdXgHLXu6MJT0wJ0j88PpQ',
+            sheets: {
+                users: 'User Assignments'
+            }
+        };
         
-        const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/1mESUpI2U6Ank-rHTTqe2v_QHWZwppBkUKszjr4zOEcg/edit'; // Replace with your sheet URL
+        const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/1mESUpI2U6Ank-rHTTqe2v_QHWZwppBkUKszjr4zOEcg/edit';
+        
+        let usersData = [];
         
         function openGoogleSheet() {
-            if (GOOGLE_SHEET_URL === 'YOUR_GOOGLE_SHEET_URL_HERE') {
-                alert('Please update the GOOGLE_SHEET_URL in the code with your actual Google Sheet URL');
-                return;
-            }
             window.open(GOOGLE_SHEET_URL, '_blank');
         }
         
         function exportToCSV() {
-            // Get current filtered data
             const tableBody = document.getElementById('usersTableBody');
             const rows = tableBody.getElementsByTagName('tr');
             
@@ -1049,7 +711,6 @@
                 const cols = row.getElementsByTagName('td');
                 const rowData = [];
                 for (let col of cols) {
-                    // Clean text and escape commas
                     let text = col.textContent.trim();
                     if (text.includes(',')) {
                         text = '"' + text + '"';
@@ -1059,7 +720,6 @@
                 csv += rowData.join(',') + '\n';
             }
             
-            // Create download
             const blob = new Blob([csv], { type: 'text/csv' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -1077,7 +737,7 @@
             
             const annualCost = user.monthlyCost * 12;
             const decisionStatus = user.decision || 'Pending Review';
-            const decisionClass = user.decision ? user.decision.toLowerCase() : 'pending';
+            const decisionClass = user.decision ? user.decision.toLowerCase().replace(/\s+/g, '-') : 'pending';
             
             document.getElementById('detailName').textContent = user.name;
             
@@ -1158,16 +818,64 @@
             document.getElementById('detailModal').classList.remove('show');
         }
         
-        function loadData() {
+        async function loadData() {
             document.getElementById('loading').style.display = 'block';
             document.getElementById('dashboard').style.display = 'none';
-
-            setTimeout(() => {
-                renderDashboard();
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('dashboard').style.display = 'block';
-                document.getElementById('lastUpdate').textContent = new Date().toLocaleString();
-            }, 1000);
+            
+            try {
+                const url = `https://sheets.googleapis.com/v4/spreadsheets/${CONFIG.spreadsheetId}/values/${CONFIG.sheets.users}?key=${CONFIG.apiKey}`;
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.values && data.values.length > 1) {
+                    // Parse Google Sheets data
+                    const headers = data.values[0];
+                    const rows = data.values.slice(1);
+                    
+                    usersData = rows.map((row, index) => ({
+                        id: index + 1,
+                        name: row[0] || '',
+                        email: row[1] || '',
+                        execTeamLead: row[2] || '',
+                        department: row[3] || '',
+                        role: row[4] || '',
+                        tool: row[5] || '',
+                        licenseType: row[6] || '',
+                        dateAssigned: row[7] || '',
+                        lastLogin: row[8] || '',
+                        status: row[9] || 'Active',
+                        decision: row[10] || null,
+                        actionBy: row[11] || '',
+                        notes: row[12] || '',
+                        monthlyCost: parseFloat(row[13]) || 0,
+                        annualSavings: parseFloat(row[14]) || 0
+                    })).filter(user => user.name && user.tool);
+                    
+                    renderDashboard();
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('dashboard').style.display = 'block';
+                    document.getElementById('lastUpdate').textContent = new Date().toLocaleString();
+                } else {
+                    throw new Error('No data found in sheet');
+                }
+            } catch (error) {
+                console.error('Error loading data:', error);
+                document.getElementById('loading').innerHTML = `
+                    <div class="alert">
+                        <strong>Unable to load data from Google Sheets</strong>
+                        Please check that:
+                        <ul style="margin-top: 12px; margin-left: 20px;">
+                            <li>Your Google Sheet is shared publicly (Viewer access)</li>
+                            <li>The sheet name is exactly "User Assignments"</li>
+                            <li>Your API key is valid and restricted to Google Sheets API</li>
+                        </ul>
+                        <br>
+                        <button class="btn-primary" onclick="loadData()" style="margin-top: 16px;">
+                            Try Again
+                        </button>
+                    </div>
+                `;
+            }
         }
 
         function renderDashboard() {
@@ -1175,24 +883,94 @@
             const decided = usersData.filter(u => u.decision).length;
             const eliminated = usersData.filter(u => u.decision === 'Eliminate');
             const potentialSavings = eliminated.reduce((sum, u) => sum + (u.monthlyCost * 12), 0);
-            const progress = Math.round((decided / usersData.length) * 100);
+            const progress = usersData.length > 0 ? Math.round((decided / usersData.length) * 100) : 0;
+            const totalAnnual = usersData.reduce((sum, u) => sum + (u.monthlyCost * 12), 0);
 
-            document.getElementById('totalAnnual').textContent = '$169k';
+            document.getElementById('totalAnnual').textContent = '$' + (totalAnnual / 1000).toFixed(0) + 'k';
             document.getElementById('pendingReviews').textContent = pending;
-            document.getElementById('potentialSavings').textContent = '$' + potentialSavings.toLocaleString();
+            document.getElementById('potentialSavings').textContent = '$' + (potentialSavings / 1000).toFixed(1) + 'k';
             document.getElementById('reviewProgress').textContent = progress + '%';
+
+            // Top 5 Expenses
+            const toolCosts = {};
+            usersData.forEach(u => {
+                toolCosts[u.tool] = (toolCosts[u.tool] || 0) + u.monthlyCost;
+            });
+            const topTools = Object.entries(toolCosts)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 5);
+            
+            const maxCost = topTools[0] ? topTools[0][1] : 1;
+            document.getElementById('topExpenses').innerHTML = topTools.map(([tool, cost]) => `
+                <div class="expense-item">
+                    <div class="expense-name">${tool}</div>
+                    <div class="expense-bar">
+                        <div class="expense-fill" style="width: ${(cost / maxCost * 100)}%"></div>
+                    </div>
+                    <div class="expense-cost">$${cost.toFixed(2)}/mo</div>
+                </div>
+            `).join('');
+
+            // Department Breakdown
+            const deptCosts = {};
+            usersData.forEach(u => {
+                const dept = u.department || 'Other';
+                deptCosts[dept] = (deptCosts[dept] || 0) + u.monthlyCost;
+            });
+            const totalDeptCost = Object.values(deptCosts).reduce((a, b) => a + b, 0);
+            const deptColors = ['#C29F9F', '#5D6556', '#544A57', '#767676', '#E8E2DD'];
+            document.getElementById('deptBreakdown').innerHTML = Object.entries(deptCosts)
+                .sort((a, b) => b[1] - a[1])
+                .map(([dept, cost], i) => `
+                    <div class="dept-item">
+                        <div class="dept-color" style="background: ${deptColors[i % deptColors.length]}"></div>
+                        <div class="dept-name">${dept}</div>
+                        <div class="dept-percent">${((cost / totalDeptCost) * 100).toFixed(0)}%</div>
+                    </div>
+                `).join('');
+
+            // Utilization
+            const activeUsers = usersData.filter(u => u.status === 'Active').length;
+            const inactiveUsers = usersData.filter(u => u.status === 'Inactive').length;
+            const total = activeUsers + inactiveUsers;
+            const utilizationRate = total > 0 ? (activeUsers / total) * 100 : 0;
+            
+            let utilLevel = 'High';
+            let utilClass = 'high';
+            if (utilizationRate < 60) {
+                utilLevel = 'Low';
+                utilClass = 'low';
+            } else if (utilizationRate < 80) {
+                utilLevel = 'Medium';
+                utilClass = 'medium';
+            }
+            
+            document.getElementById('utilization').innerHTML = `
+                <div class="util-item">
+                    <div class="util-header">
+                        <div class="util-label">${utilLevel} Utilization</div>
+                        <div class="util-value">${utilizationRate.toFixed(0)}%</div>
+                    </div>
+                    <div class="util-bar">
+                        <div class="util-fill ${utilClass}" style="width: ${utilizationRate}%"></div>
+                    </div>
+                </div>
+                <div style="margin-top: 16px; font-size: 0.875rem; color: var(--mid);">
+                    ${activeUsers} active / ${total} total licenses
+                </div>
+            `;
 
             renderUsersTable(usersData);
         }
 
-        function renderUsersTable(data) {
+        function renderUsersTable(users) {
             const tbody = document.getElementById('usersTableBody');
             tbody.innerHTML = '';
 
-            data.forEach(user => {
+            users.forEach(user => {
                 const row = document.createElement('tr');
                 row.onclick = () => showUserDetail(user.id);
-                const decisionClass = user.decision ? `badge-${user.decision.toLowerCase()}` : 'badge-pending';
+                const decisionClass = user.decision ? `badge-${user.decision.toLowerCase().replace(/\s+/g, '-')}` : 'badge-pending';
                 const decisionText = user.decision || 'Pending';
                 
                 row.innerHTML = `
@@ -1222,6 +1000,10 @@
             renderUsersTable(filtered);
         }
 
+        // Auto-refresh every 5 minutes
+        setInterval(loadData, 5 * 60 * 1000);
+
+        // Load data on page load
         loadData();
     </script>
 </body>
