@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KKH SaaS Dashboard</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap');
+:root{color-scheme:light;--charcoal:#383838;--mauve:#544A57;--blush:#C29F9F;--cream:#E8E2DD;--cream-lt:#F4F0ED;--white:#FAFAF8;--accent:#8B7B8B;--danger:#A0522D;--success:#4A7C59;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;background:var(--white);color:var(--charcoal);line-height:1.5;padding:32px 24px 64px}
+.wrap{max-width:1180px;margin:0 auto}
+.topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
+h1{font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:34px;letter-spacing:-.4px}
+.sub{color:var(--accent);font-size:14px;margin-top:6px;font-weight:500}
+.rule{height:2px;background:var(--blush);width:56px;margin:16px 0 22px}
+.btn{padding:8px 14px;border:1px solid var(--blush);background:var(--white);color:var(--mauve);border-radius:2px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+.btn:hover{background:var(--cream-lt)}
+.livedot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--success);margin-right:6px;vertical-align:middle}
+.gate{max-width:420px;margin:12vh auto;text-align:center;padding:40px 32px;background:var(--cream-lt);border:1px solid var(--cream);border-radius:2px}
+.gate h1{font-size:26px;margin-bottom:8px}
+.gate p{color:var(--mauve);font-size:14px;margin:10px 0 22px}
+.gbtn{display:inline-flex;align-items:center;gap:10px;padding:11px 20px;border:1px solid var(--charcoal);background:var(--white);color:var(--charcoal);border-radius:2px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+.gbtn:hover{background:var(--charcoal);color:var(--white)}
+.gerr{color:var(--danger);font-size:13px;margin-top:14px}
+.who-bar{font-size:12px;color:var(--accent)}
+.note-top{background:var(--cream-lt);border-left:3px solid var(--blush);padding:12px 16px;font-size:13px;color:var(--mauve);margin-bottom:26px;border-radius:2px}
+.note-top b{color:var(--charcoal)}
+h2{font-family:'Playfair Display',Georgia,serif;font-weight:600;font-size:22px;margin:38px 0 4px;color:var(--mauve)}
+.h2sub{color:var(--accent);font-size:13px;margin-bottom:16px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.kpi{background:var(--cream-lt);border:1px solid var(--cream);border-radius:2px;padding:18px 16px}
+.kpi .v{font-family:'Playfair Display',Georgia,serif;font-size:28px;font-weight:700}
+.kpi .l{font-size:12px;color:var(--accent);margin-top:4px;text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+.kpi .n{font-size:12px;color:var(--mauve);margin-top:6px}
+.callout{background:var(--charcoal);color:var(--cream-lt);border-radius:2px;padding:22px 24px;margin:26px 0}
+.callout h3{font-family:'Playfair Display',Georgia,serif;font-size:19px;color:var(--white);margin-bottom:8px;font-weight:600}
+.callout p{font-size:14px;color:var(--cream);margin-top:8px}
+.callout strong{color:var(--blush);font-weight:700}
+.tco{border:1px solid var(--cream);border-radius:2px;overflow:hidden;margin-top:8px}
+.tcorow{display:grid;grid-template-columns:2.4fr 1fr 1.3fr 1.2fr;align-items:center;padding:11px 16px;border-bottom:1px solid var(--cream-lt);font-size:14px}
+.tcorow>div:not(:first-child){text-align:right}
+.tcohead{background:var(--cream-lt);font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--accent);font-weight:700}
+.tcorow input{width:92px;padding:6px 8px;border:1px solid var(--blush);border-radius:2px;font-family:inherit;font-size:13px;text-align:right}
+.tcorow.subtotal{background:var(--cream-lt);font-weight:600}
+.tcorow.total{background:var(--charcoal);color:var(--white);font-weight:700;font-size:16px}
+.tcorow.total div{color:var(--white)}
+.tcorow.annual{font-weight:600;color:var(--mauve)}
+.incl{background:var(--cream-lt);border-radius:2px;padding:16px 18px;margin-top:14px;font-size:13px;color:var(--mauve)}
+.incl h4{font-family:'Playfair Display',Georgia,serif;font-size:15px;color:var(--charcoal);margin-bottom:8px}
+.conc{display:flex;height:34px;border-radius:2px;overflow:hidden;margin:14px 0 6px;border:1px solid var(--cream)}
+.conc div{display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff}
+.conclegend{font-size:12px;color:var(--accent)}
+.bar{display:flex;align-items:center;gap:12px;margin:7px 0;font-size:13px}
+.bar .nm{width:150px;text-align:right;color:var(--mauve);font-weight:600;flex-shrink:0}
+.bar .track{flex:1;background:var(--cream-lt);border-radius:2px;height:22px}
+.bar .fill{height:100%;background:var(--mauve);border-radius:2px}
+.bar .amt{width:120px;font-weight:700;flex-shrink:0}
+.bar .tag{font-size:10px;color:var(--accent);margin-left:6px}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 12px;align-items:center}
+.controls input{padding:8px 12px;border:1px solid var(--cream);border-radius:2px;font-family:inherit;font-size:13px;width:220px}
+.pill{padding:6px 14px;border:1px solid var(--blush);background:var(--white);color:var(--mauve);border-radius:2px;font-size:12px;font-weight:600;cursor:pointer}
+.pill.on{background:var(--mauve);color:#fff;border-color:var(--mauve)}
+.legend{font-size:11px;color:var(--accent);margin:4px 0 0}.legend span{margin-right:14px}
+.nav{display:flex;gap:2px;border-bottom:2px solid var(--cream);margin-bottom:20px;flex-wrap:wrap}
+.tab{padding:10px 18px;font-size:13px;font-weight:700;color:var(--accent);border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;font-family:inherit}
+.tab.on{color:var(--charcoal);border-bottom-color:var(--mauve)}
+.tab.soon{color:#bcb3b0;cursor:default}
+.tab .soontag{font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--blush);margin-left:5px;font-weight:700}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px}
+th{text-align:right;padding:10px 8px;border-bottom:2px solid var(--cream);color:var(--accent);font-size:11px;text-transform:uppercase;letter-spacing:.4px;cursor:pointer;user-select:none;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th.act{color:var(--mauve)}
+td{padding:9px 8px;border-bottom:1px solid var(--cream-lt);text-align:right}
+tr:hover td{background:var(--cream-lt)}
+.who{font-weight:600}.em{font-size:11px;color:var(--accent);display:block}
+.badge{font-size:10px;padding:2px 7px;border-radius:2px;font-weight:700}
+.b-prem{background:var(--blush);color:#fff}.b-zero{background:var(--cream);color:var(--accent)}.b-never{background:var(--danger);color:#fff}.b-code{background:var(--mauve);color:#fff}
+.foot{margin-top:32px;font-size:12px;color:var(--accent);border-top:1px solid var(--cream);padding-top:16px}
+.state{padding:60px 20px;text-align:center;color:var(--accent);font-size:15px}
+.state.err{color:var(--danger)}
+@media(max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)}.bar .nm{width:90px}.tcorow{grid-template-columns:1.8fr .7fr 1fr 1fr;font-size:12px}}
+</style></head><body>
+<div id="gate" class="gate">
+  <h1>KKH SaaS Dashboard</h1>
+  <p>Kathy Kuo Home, internal. Sign in with your <b>@kathykuohome.com</b> Google account to continue.</p>
+  <button class="gbtn" id="signin">Sign in with Google</button>
+  <div class="gerr" id="gerr"></div>
+</div>
+<div class="wrap" id="wrap" style="display:none">
+  <div class="topbar">
+    <div><h1>KKH SaaS Dashboard</h1>
+      <div class="sub" id="sub"><span class="livedot"></span>Kathy Kuo Home</div></div>
+    <div style="text-align:right">
+      <button class="btn" onclick="loadData()">↻ Refresh</button>
+      <button class="btn" id="signout">Sign out</button>
+      <div class="who-bar" id="whobar" style="margin-top:6px"></div>
+    </div>
+  </div>
+  <div class="rule"></div>
+  <div class="nav">
+    <button class="tab on">Claude Usage</button>
+    <button class="tab soon" title="Coming soon">SaaS Inventory <span class="soontag">soon</span></button>
+    <button class="tab soon" title="Coming soon">Offboarding <span class="soontag">soon</span></button>
+  </div>
+  <div id="app"><div class="state">Loading live usage data…</div></div>
+  <div class="foot" id="foot"></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL="https://uteehxepyoyxshtemsbg.supabase.co";
+const SUPABASE_KEY="sb_publishable_91GUGtGItd6nOD8oCBZMfg_vEwetRzg";
+const ALLOWED_DOMAIN="kathykuohome.com";
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const gate=document.getElementById('gate'),wrap=document.getElementById('wrap'),app=document.getElementById('app');
+
+document.getElementById('signin').onclick=()=>sb.auth.signInWithOAuth({
+  provider:'google',
+  options:{queryParams:{hd:ALLOWED_DOMAIN,prompt:'select_account'},redirectTo:window.location.href.split('#')[0]}
+});
+document.getElementById('signout').onclick=async()=>{await sb.auth.signOut();location.reload();};
+
+async function boot(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){gate.style.display='block';wrap.style.display='none';return;}
+  const email=(session.user.email||'').toLowerCase();
+  if(!email.endsWith('@'+ALLOWED_DOMAIN)){
+    await sb.auth.signOut();
+    gate.style.display='block';wrap.style.display='none';
+    document.getElementById('gerr').textContent='That account isn’t a @'+ALLOWED_DOMAIN+' address. Use your company Google account.';
+    return;
+  }
+  gate.style.display='none';wrap.style.display='block';
+  document.getElementById('whobar').textContent='Signed in as '+email;
+  loadData();
+}
+sb.auth.onAuthStateChange((_e,_s)=>boot());
+
+function money(n){return '$'+Number(n).toLocaleString(undefined,{minimumFractionDigits:0,maximumFractionDigits:0});}
+function money2(n){return '$'+Number(n).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});}
+function tot(x){return (x.chats||0)+(x.messages||0)+(x.cowork_sessions||0)+(x.cowork_messages||0)+(x.code_sessions||0)+(x.file_edits||0)+(x.pull_requests||0)+(x.artifacts_created||0)+(x.projects_created||0)+(x.projects_used||0);}
+function domact(x){
+  if((x.file_edits||0)>=(x.messages||0)&&(x.file_edits||0)>0)return 'code / file edits';
+  if((x.code_sessions||0)>0&&(x.messages||0)===0)return 'code sessions';
+  if((x.cowork_sessions||0)>50)return 'Cowork-heavy';
+  if((x.messages||0)>0)return 'chat';
+  return '-';
+}
+let ROWS=[],SNAP=null;
+async function loadData(){
+  app.innerHTML='<div class="state">Loading live usage data…</div>';
+  const {data:usage,error:e1}=await sb.from('claude_usage_latest').select('*');
+  const {data:snaps}=await sb.from('usage_snapshots').select('*').eq('service','claude').order('period_end',{ascending:false}).limit(1);
+  if(e1){app.innerHTML='<div class="state err">Could not read data: '+e1.message+'</div>';return;}
+  ROWS=usage||[];SNAP=(snaps&&snaps[0])||null;
+  if(!ROWS.length){app.innerHTML='<div class="state">No usage rows found yet.</div>';return;}
+  render();
+}
+function render(){
+  const N=ROWS.length;
+  const TOTAL=ROWS.reduce((a,x)=>a+Number(x.overage_spend||0),0);
+  const STD=ROWS.filter(x=>x.seat_tier==='Standard').length;
+  const PREM=ROWS.filter(x=>x.seat_tier==='Premium').length;
+  const MSGS=ROWS.reduce((a,x)=>a+(x.messages||0),0);
+  const CHATS=ROWS.reduce((a,x)=>a+(x.chats||0),0);
+  const COWORK=ROWS.reduce((a,x)=>a+(x.cowork_sessions||0),0);
+  const neverN=ROWS.filter(x=>tot(x)===0).length,active=N-neverN;
+  const zero=ROWS.filter(x=>Number(x.overage_spend||0)===0).length;
+  let months=3,periodTxt="";
+  if(SNAP){const d0=new Date(SNAP.period_start),d1=new Date(SNAP.period_end);months=Math.max(1,(d1-d0)/86400000/30.44);
+    const f=d=>d.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'});periodTxt=f(d0)+" to "+f(d1);}
+  const overMonthly=TOTAL/months;
+  const srt=[...ROWS].sort((a,b)=>Number(b.overage_spend)-Number(a.overage_spend));
+  const seg=(a,b)=>srt.slice(a,b).reduce((s,x)=>s+Number(x.overage_spend||0),0);
+  const rest=N-10,pct=s=>Math.round(s/TOTAL*100);
+  const cc=[[seg(0,2),'#383838'],[seg(2,5),'#544A57'],[seg(5,10),'#8B7B8B'],[seg(10,N),'#C29F9F']];
+  const conc=cc.map(([s,col])=>{const p=s/TOTAL*100;return `<div style="width:${p}%;background:${col}">${p>=6?Math.round(p)+'%':''}</div>`}).join('');
+  const top=srt.slice(0,12),mx=top[0]?Number(top[0].overage_spend):1;
+  const bars=top.map(x=>`<div class="bar"><div class="nm">${x.name||x.email}</div><div class="track"><div class="fill" style="width:${Number(x.overage_spend)/mx*100}%"></div></div><div class="amt">${money(x.overage_spend)}<span class="tag">${domact(x)}</span></div></div>`).join('');
+  document.getElementById('sub').innerHTML='<span class="livedot"></span>Kathy Kuo Home · '+(periodTxt||'live')+' · '+N+' seats · Team plan';
+  app.innerHTML=`
+  <div class="note-top"><b>Read this first:</b> the dollar figures are <b>extra-usage (overage) spend only</b>, usage beyond each seat's included allotment. They are <b>not</b> the total cost of Claude. Total = seat subscriptions <b>+</b> this ${money(TOTAL)} of overage (below). Seats within allotment show $0.</div>
+  <div class="kpis">
+    <div class="kpi"><div class="v">${money(TOTAL)}</div><div class="l">Extra-usage spend</div><div class="n">overage only · ~${money(overMonthly)}/mo</div></div>
+    <div class="kpi"><div class="v">${active} / ${N}</div><div class="l">Seats with activity</div><div class="n">${neverN} never used · ${zero} at $0 overage</div></div>
+    <div class="kpi"><div class="v">${MSGS.toLocaleString()}</div><div class="l">Messages</div><div class="n">${CHATS.toLocaleString()} chats</div></div>
+    <div class="kpi"><div class="v">${COWORK.toLocaleString()}</div><div class="l">Cowork sessions</div><div class="n">avg ${money(TOTAL/N)} overage / seat</div></div>
+  </div>
+  <div class="callout"><h3>What's driving the overage</h3>
+    <p>Extra-usage spend is <strong>highly concentrated</strong> and <strong>decoupled from chat volume.</strong> Top 2 = <strong>${pct(seg(0,2))}%</strong> · top 5 = <strong>${pct(seg(0,5))}%</strong> · top 10 = <strong>${pct(seg(0,10))}%</strong> of overage.</p>
+    <p>The biggest overage comes from power users on <strong>Standard</strong> seats doing heavy code / agent work. Premium seats carry a far larger allotment, so moving a few of them to Premium could cut overage. ${neverN} seat${neverN!==1?'s':''} never used, a right-sizing candidate.</p>
+  </div>
+  <h2>Total cost of ownership</h2>
+  <div class="h2sub">The $ above is only variable overage. Seat rates are list price, <b>edit to match your invoice</b>; totals recompute live.</div>
+  <div class="tco">
+    <div class="tcorow tcohead"><div>Component</div><div>Seats</div><div>Rate / mo</div><div>Monthly</div></div>
+    <div class="tcorow"><div>Standard seats</div><div>${STD}</div><div>$ <input id="rStd" type="number" value="20"></div><div id="mStd"></div></div>
+    <div class="tcorow"><div>Premium seats</div><div>${PREM}</div><div>$ <input id="rPrem" type="number" value="100"></div><div id="mPrem"></div></div>
+    <div class="tcorow subtotal"><div>Seat subscription (fixed)</div><div>${N}</div><div>-</div><div id="mSeats"></div></div>
+    <div class="tcorow"><div>Extra usage, overage (variable)</div><div>-</div><div>usage-based</div><div id="mOver"></div></div>
+    <div class="tcorow total"><div>Total estimated monthly Claude cost</div><div></div><div></div><div id="mTotal"></div></div>
+    <div class="tcorow annual"><div>Annualized (× 12)</div><div></div><div></div><div id="mAnnual"></div></div>
+  </div>
+  <div class="incl"><h4>What the seat subscription already includes</h4>
+   Every Team seat includes Claude Code, chat/Projects/Cowork, an included per-session usage allotment (Standard ≈1.25× Pro, Premium ≈5× Standard), connectors, SSO, admin controls. The ${money(TOTAL)} overage is only usage past those allotments.</div>
+  <h2>Overage concentration</h2>
+  <div class="h2sub">Share of the ${money(TOTAL)} extra-usage total by rank</div>
+  <div class="conc">${conc}</div>
+  <div class="conclegend">Top 2 · Top 3-5 · Top 6-10 · everyone else (${rest} seats)</div>
+  <h2>Top 12 by extra-usage spend</h2>
+  <div class="h2sub">Bar length = overage · tag = dominant activity</div>
+  <div>${bars}</div>
+  <h2>All ${N} members</h2>
+  <div class="h2sub">Sorted by overage. Search or click a column to re-sort.</div>
+  <div class="controls"><input id="q" placeholder="Search name or email…">
+    <span class="pill on" data-f="all">All</span><span class="pill" data-f="spend">Has overage</span>
+    <span class="pill" data-f="zero">$0 overage</span><span class="pill" data-f="never">Never used</span><span class="pill" data-f="prem">Premium</span></div>
+  <div class="legend"><span><b style="color:var(--danger)">never used</b> = no activity</span><span><b style="color:var(--mauve)">code only</b> = via Claude Code</span><span><b style="color:var(--accent)">$0 overage</b> = within allotment</span></div>
+  <table id="tbl"><thead><tr>
+    <th data-k="name">Member</th><th data-k="role">Role</th><th data-k="days_active">Days</th>
+    <th data-k="chats">Chats</th><th data-k="messages">Msgs</th><th data-k="cowork_sessions">Cowork</th>
+    <th data-k="file_edits">File edits</th><th data-k="code_sessions">Code</th><th class="act" data-k="overage_spend">Overage $</th></tr></thead><tbody></tbody></table>`;
+  function calc(){const rs=parseFloat(document.getElementById('rStd').value)||0,rp=parseFloat(document.getElementById('rPrem').value)||0;
+    const seats=STD*rs+PREM*rp,total=seats+overMonthly;
+    document.getElementById('mStd').textContent=money(STD*rs);document.getElementById('mPrem').textContent=money(PREM*rp);
+    document.getElementById('mSeats').textContent=money(seats)+' / mo';document.getElementById('mOver').textContent=money(overMonthly)+' / mo';
+    document.getElementById('mTotal').textContent=money(total)+' / mo';document.getElementById('mAnnual').textContent=money(total*12)+' / yr';}
+  document.getElementById('rStd').addEventListener('input',calc);document.getElementById('rPrem').addEventListener('input',calc);calc();
+  const tb=document.querySelector('#tbl tbody');let q='',filter='all',sortK='overage_spend',dir=-1;
+  function draw(){const rows=srt.filter(x=>{const nm=(x.name||'').toLowerCase(),em=(x.email||'').toLowerCase();
+      if(q&&nm.indexOf(q)<0&&em.indexOf(q)<0)return false;
+      if(filter==='spend')return Number(x.overage_spend)>0;if(filter==='zero')return Number(x.overage_spend)===0;
+      if(filter==='never')return tot(x)===0;if(filter==='prem')return x.seat_tier==='Premium';return true;})
+      .sort((a,b)=>{let A=a[sortK],B=b[sortK];if(typeof A==='string'){A=(A||'').toLowerCase();B=(B||'').toLowerCase();return A<B?-dir:A>B?dir:0;}return (Number(A)-Number(B))*dir;});
+    tb.innerHTML=rows.map(x=>{let b='';const t=tot(x);
+      if(t===0)b=' <span class="badge b-never">never used</span>';
+      else if((x.chats||0)===0&&(x.messages||0)===0&&((x.code_sessions||0)>0||(x.file_edits||0)>0))b=' <span class="badge b-code">code only</span>';
+      else if(Number(x.overage_spend)===0)b=' <span class="badge b-zero">$0 overage</span>';
+      if(x.seat_tier==='Premium')b+=' <span class="badge b-prem">Prem</span>';
+      const role=(x.role||'').replace('Primary ','').replace('Membership ','');
+      return `<tr><td><span class="who">${x.name||x.email}</span>${b}<span class="em">${x.email}</span></td>
+      <td>${role}</td><td>${x.days_active||0}</td><td>${x.chats||0}</td><td>${(x.messages||0).toLocaleString()}</td>
+      <td>${x.cowork_sessions||0}</td><td>${(x.file_edits||0).toLocaleString()}</td><td>${x.code_sessions||0}</td>
+      <td style="font-weight:700">${money2(x.overage_spend)}</td></tr>`;}).join('');}
+  document.getElementById('q').addEventListener('input',e=>{q=e.target.value.toLowerCase();draw();});
+  document.querySelectorAll('.pill').forEach(p=>p.addEventListener('click',()=>{document.querySelectorAll('.pill').forEach(z=>z.classList.remove('on'));p.classList.add('on');filter=p.dataset.f;draw();}));
+  document.querySelectorAll('#tbl th').forEach(th=>th.addEventListener('click',()=>{const k=th.dataset.k;if(sortK===k)dir*=-1;else{sortK=k;dir=(k==='name'||k==='role')?1:-1;}draw();}));
+  draw();
+  document.getElementById('foot').innerHTML='Live from the <b>kkh-saas-tracker</b> database, restricted to @'+ALLOWED_DOMAIN+' sign-in · snapshot '+(SNAP?SNAP.period_start+' → '+SNAP.period_end:'')+'. Figures are estimated <b>extra-usage (overage)</b> on a Team plan, not total cost. Seat rates are list prices, confirm against invoice.';
+}
+boot();
+</script></body></html>
